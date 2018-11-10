@@ -1,0 +1,24 @@
+{
+  "name": "donation-web",
+  "version": "1.0.0",
+  "description": "Team 58!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KanavKG/Donation-web.git"
+  },
+  "author": "Kanav Garg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KanavKG/Donation-web/issues"
+  },
+  "homepage": "https://github.com/KanavKG/Donation-web#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  }
+}

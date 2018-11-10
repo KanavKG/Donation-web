@@ -1,0 +1,29 @@
+<% include partials/header %>
+<div class="jumbotron ">
+    <h1 style = "text-align: left">Create a new location</h1>
+</div>
+
+<div class="container">
+    <div class="container" style="padding-top: 50px">
+
+        <div style="width = 30%">
+    <form class="new-location" action="/locationspage" method="POST">
+        <div class="form-group">
+        <input type="text" name = "name" placeholder="Name">
+        </div>
+        <div class="form-group">
+        <input type="text" name = "city" placeholder="City" style="margin-bottom: 20px">
+<div class="form-group">
+    <button class = "btn btn-lg btn-primary"> Add Location </button>
+</div>
+
+    </form>
+    </div>
+
+
+
+<a href="/locationspage">Go Back</a>
+</div>
+
+</div>
+<% include partials/footer %>
