@@ -1,21 +1,6 @@
 <% include partials/header %>
 
 
-    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-    <script>
-  // Initialize Firebase
-    var config = {
-    apiKey: "AIzaSyANdsKVA9aRHqJSzQxkTez7-9I-HFI6Vko",
-    authDomain: "donationtracker-2bec2.firebaseapp.com",
-    databaseURL: "https://donationtracker-2bec2.firebaseio.com",
-    projectId: "donationtracker-2bec2",
-    storageBucket: "donationtracker-2bec2.appspot.com",
-    messagingSenderId: "515896993726"
-  };
-    firebase.initializeApp(config);
-    </script>
-
-
 <header class="jumbotron">
     <div class = "container">
     <h1>Locations page!</h1>
@@ -26,7 +11,9 @@
 
 
 <div class="list-group">
+
     <% locations.forEach(function(location){ %>
+    <% console.log(location) %>
     <div class="container">
     <a href="#" class="list-group-item list-group-item-action">
     <h3><%= location.name %> </h2>
