@@ -1,0 +1,27 @@
+<% include partials/header %>
+<header class="jumbotron">
+    <div class = "container">
+    <h1>Donation page</h1>
+    <h3><%= location.name %> </h3>
+    <h6> <%= location.city %> </h6>
+    <p><a class = "btn btn-primary btn-large" href="/locationspage/newdonation"> Add donation</a></p>
+    <div class = "container">
+</header>
+
+
+
+
+<div class="list-group">
+
+    <% donations.forEach(function(donation){ %>
+    <div class="container">
+    <a href="#" class="list-group-item list-group-item-action">
+    <h3><%= donation.name %> </h3>
+    <h6> <%= donation.category %> </h6>
+    </a>
+</div>
+
+
+<% }); %>
+</div>
+<% include partials/footer %>

@@ -13,10 +13,10 @@
 <div class="list-group">
 
     <% locations.forEach(function(location){ %>
-    <% console.log(location) %>
     <div class="container">
-    <a href="#" class="list-group-item list-group-item-action">
-    <h3><%= location.name %> </h2>
+
+    <a href="/locationspage/<%= location.name %>" class="list-group-item list-group-item-action">
+    <h3><%= location.name %> </h3>
     <h6> <%= location.city %> </h6>
     </a>
 </div>
