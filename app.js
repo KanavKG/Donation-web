@@ -32,7 +32,25 @@ app.set("view engine", "ejs");
 var locations = []
 var donationsarr = []
 var location;
+var user;
 
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    console.log("userlognin");
+    var displayName = user.displayName;
+    var email = user.email;
+    var emailVerified = user.emailVerified;
+    var photoURL = user.photoURL;
+    var isAnonymous = user.isAnonymous;
+    var uid = user.uid;
+    var providerData = user.providerData;
+    // ...
+  } else {
+    // User is signed out.
+    // ...
+  }
+});
 
 app.get("/", function(req, res) {
     res.render("landing");
@@ -61,8 +79,63 @@ app.get("/locationspage/new", function(req, res){
 app.get("/signin", function(req, res){
     res.render("signin");
 });
+
+app.post("/signin", function(req, res){
+    var email = req.body.inputEmail;
+    var password = req.body.inputPassword;
+    firebase.auth().signInWithEmailAndPassword(email,password)
+    .then(function(){
+        res.redirect("locationspage");
+    })
+    .catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(error.code)
+    console.log(error.message);
+});
+})
 app.get("/registration", function(req, res){
     res.render("registration");
+});
+
+app.post("/registration", function(req, res){
+    var fname = req.body.inputFirstName;
+    var lname = req.body.inputLastName;
+    var email = req.body.inputEmail;
+    var password = req.body.inputPassword;
+    var confirm = req.body.confirmInputPassword;
+    var role = req.body.roledropdown;
+    if (password === confirm) {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(function() {
+            var user = firebase.auth().currentUser;
+            console.log(user.uid);
+            db.collection("users").add({
+                first: fname,
+                last: lname,
+                role: role,
+                UID: user.uid
+            })
+            .then(function(docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
+            });
+
+            res.redirect("locationspage");
+            //Add user to database
+            //Redirect to locationspage
+        })
+        .catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(error.code);
+            console.log(error.message);
+        });
+    } else {
+        window.alert("Password and Confirm passwords do not match");
+    }
 });
 
 app.get("/locationdetails/:id", function(req, res){
