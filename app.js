@@ -3,6 +3,7 @@ var express    = require("express"),
     bodyparser = require("body-parser")
     firebase   = require("firebase");
                  require("firebase/firestore");
+                 require("firebase/auth");
 
 
 
