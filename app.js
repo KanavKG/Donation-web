@@ -29,14 +29,9 @@ app.use(bodyparser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
-var locations = [
-    // {name: "AFD Station 4", city: "Atlanta"},
-    // {name: "BOYS & GIRLS CLUB W.W. WOOLFOLK", city: "Atlanta"},
-    // {name: "PATHWAY UPPER ROOM CHRISTIAN MINISTRIES", city: "Atlanta"},
-    // {name: "PAVILION OF HOPE INC", city: "Scottdale"},
-    // {name: "KEEP NORTH FULTON BEAUTIFUL", city: "Decatur"},
-    // {name: "D&D CONVENIENCE STORE", city: "Sandy Spring"}
-]
+var locations = []
+var donationsarr = []
+var location;
 
 
 app.get("/", function(req, res) {
@@ -45,37 +40,73 @@ res.render("landing");
 });
 
 app.post("/", function(req, res){
-    //     db.collection("users").add({
-    //     first: "Ada",
-    //     last: "Lovelace",
-    //     location: "AFD Station 4",
-    //     role: "Location Employee"
-    // })
-    // .then(function(docRef) {
-    //     console.log("Document written with ID: ", docRef.id);
-    // })
-    // .catch(function(error) {
-    //     console.error("Error adding document: ", error);
-    // });
     res.redirect("locationspage");
-})
+});
+
 app.get("/locationspage", function(req, res){
     db.collection("locations").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        locations.push(doc.data());
-    });
+        var temp = doc.data();
+        locations.push(temp);
+        });
     res.render("locationspage", {locations: locations});
- //});
-    // res.render("locationspage", {locations: querySnapshot});
-});
+    locations = [];
+    });
 });
 
-app.get("/locationspage/newlocation", function(req, res){
-    res.render("newlocation.ejs");
+app.get("/locationspage/new", function(req, res){
+    res.render("new");
 })
-app.post("/locationspage", function(req, res){
 
+app.get("/registration", function(req, res){
+    res.render("registration");
+})
+app.get("/locationdetails/:id", function(req, res){
+    db.collection("locations").where("name", "==", req.params.id)
+        .get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                location = doc.data();
+                res.render("locationdetails", {location: location});
+            });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+        location = null;
+});
+
+app.get("/locationspage/:id", function(req, res){
+    db.collection("donations").where("location", "==", req.params.id)
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    donationsarr.push(doc.data());
+                });
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
+    db.collection("locations").where("name", "==", req.params.id)
+        .get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                location = doc.data();
+                res.render("location", {location: location, donations: donationsarr});
+            });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+    donationsarr = [];
+    location = null;
+});
+
+app.get("/locationspage/")
+app.post("/locationspage", function(req, res){
     var name = req.body.name;
     var city = req.body.city;
     var newLocation = {name: name, city: city};
