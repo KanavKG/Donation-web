@@ -35,7 +35,7 @@ var location;
 
 
 app.get("/", function(req, res) {
-res.render("landing");
+    res.render("landing");
 
 });
 
@@ -58,9 +58,13 @@ app.get("/locationspage/new", function(req, res){
     res.render("new");
 })
 
+app.get("/signin", function(req, res){
+    res.render("signin");
+});
 app.get("/registration", function(req, res){
     res.render("registration");
-})
+});
+
 app.get("/locationdetails/:id", function(req, res){
     db.collection("locations").where("name", "==", req.params.id)
         .get()
