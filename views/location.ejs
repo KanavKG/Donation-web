@@ -1,10 +1,11 @@
 <% include partials/header %>
+
 <header class="jumbotron">
     <div class = "container">
     <h1>Donation page</h1>
     <h3><%= location.name %> </h3>
     <h6> <%= location.city %> </h6>
-    <p><a class = "btn btn-primary btn-large" href="/locationspage/newdonation"> Add donation</a>
+    <p><a class = "btn btn-primary btn-large" href="/locationspage/<%=location.name%>/newdonation"> Add donation</a>
     <a class = "btn btn-primary btn-large" href="/locationdetails/<%=location.name%>">Location details</a></p>
     <div class = "container">
 </header>

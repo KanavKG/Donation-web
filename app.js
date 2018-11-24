@@ -4,19 +4,18 @@ var express    = require("express"),
     firebase   = require("firebase");
                  require("firebase/firestore");
                  require("firebase/auth");
+                 require('dotenv').config();
 
+firebase.initializeApp({
+    apiKey: process.env.MY_API_KEY,
+    authDomain: process.env.AUTHDOMAIN,
+    databaseURL: process.env.DATABASEURL,
+    projectId: process.env.PROJECTID,
+    storageBucket: process.env.STORAGEBUCKET,
+    messagingSenderId: process.env.MESSEGINGSENDERID
+  });
 
-
-var config = {
-    apiKey: "AIzaSyANdsKVA9aRHqJSzQxkTez7-9I-HFI6Vko",
-    authDomain: "donationtracker-2bec2.firebaseapp.com",
-    databaseURL: "https://donationtracker-2bec2.firebaseio.com",
-    projectId: "donationtracker-2bec2",
-    storageBucket: "donationtracker-2bec2.appspot.com",
-    messagingSenderId: "515896993726"
-  };
-
-firebase.initializeApp(config);
+// firebase.initializeApp(config);
 
 var db = firebase.firestore();
 
@@ -78,6 +77,9 @@ app.get("/locationdetails/:id", function(req, res){
         location = null;
 });
 
+app.get("/locationspage/:id/newdonation", function(req, res){
+    res.render("newdonation");
+})
 app.get("/locationspage/:id", function(req, res){
     db.collection("donations").where("location", "==", req.params.id)
             .get()
