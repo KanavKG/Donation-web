@@ -74,6 +74,10 @@ app.get("/locationspage/new", function(req, res){
     res.render("new");
 })
 
+app.get("/locationspage/map", function(req, res){
+    res.render("map");
+})
+
 app.get("/signin", function(req, res){
     res.render("signin");
 });
