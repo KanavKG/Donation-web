@@ -190,20 +190,7 @@ app.post("/locationspage/:id/newdonation", function(req, res){
     })
     .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
-        db.collection("locations").where("name", "==", req.params.id)
-            .get()
-            .then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    location = doc.data();
-                    res.render("location", {location: location, donations: donationsarr});
-                });
-            })
-            .catch(function(error) {
-                console.log("Error getting documents: ", error);
-            });
-        donationsarr = [];
-        location = null;
+        res.redirect("location")
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
