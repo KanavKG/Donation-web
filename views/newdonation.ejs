@@ -9,15 +9,14 @@
 
     <form class="form-signin" method="POST">
       <h1 class="h3 mb-3 font-weight-normal">Add an item:</h1>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="text" id="inputName" class="form-control" placeholder="Name" required autofocus>
-      <input type="text" id="inputLocation" class="form-control" placeholder="Location (City)" required>
-      <input type="number" id="inputValue" class="form-control" placeholder="Monetary Value" required>
-      <input type="text" id="inputShort" class="form-control" placeholder="Short Description" required autofocus>
-      <input type="textarea" id="inputLong" class="form-control" placeholder="Long Description">
+      <input type="text" name="inputName" class="form-control" placeholder="Item name" required autofocus>
+      <input type="text" name="inputLocation" class="form-control" placeholder="Location" required>
+      <input type="number" name="inputValue" class="form-control" placeholder="Monetary Value" required>
+      <input type="text" name="inputShort" class="form-control" placeholder="Short Description" required autofocus>
+      <input type="textarea" name="inputLong" class="form-control" placeholder="Long Description">
       <div class="checkbox mb-3">
       <div>
-      <select class="form-control form-control-md" name="typrdropdown">
+      <select class="form-control form-control-md" name="typedropdown">
         <option disabled selected>Category</option>
         <option>Appliances</option>
         <option>Baby</option>
@@ -34,7 +33,7 @@
     </div>
   </div>
       </div>
-      <input type="textarea" id="inputComment" class="form-control" placeholder="Comments">
+      <input type="textarea" name="inputComment" class="form-control" placeholder="Comments">
       <div class="checkbox mb-3">
       <button class="btn btn-lg btn-primary btn-block" type="submit">Add Donation</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2018-2019</p>

@@ -29,9 +29,10 @@ app.use(bodyparser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
-var locations = []
+var locations = [];
 var donationsarr = []
 var location;
+var donation;
 var user;
 
 firebase.auth().onAuthStateChanged(function(user) {
@@ -41,7 +42,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     var displayName = user.displayName;
     var email = user.email;
     var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
+    var role = user.role;
     var isAnonymous = user.isAnonymous;
     var uid = user.uid;
     var providerData = user.providerData;
@@ -109,7 +110,6 @@ app.post("/registration", function(req, res){
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function() {
             var user = firebase.auth().currentUser;
-            console.log(user.uid);
             db.collection("users").add({
                 first: fname,
                 last: lname,
@@ -138,6 +138,21 @@ app.post("/registration", function(req, res){
     }
 });
 
+app.get("/locationdetails/:id/:id2", function(req, res){
+    db.collection("donations").where("name", "==", req.params.id2)
+        .get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                donation = doc.data();
+                res.render("donationdetails", {donation: donation});
+            });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+        donation = null;
+})
 app.get("/locationdetails/:id", function(req, res){
     db.collection("locations").where("name", "==", req.params.id)
         .get()
@@ -157,6 +172,43 @@ app.get("/locationdetails/:id", function(req, res){
 app.get("/locationspage/:id/newdonation", function(req, res){
     res.render("newdonation");
 })
+
+app.post("/locationspage/:id/newdonation", function(req, res){
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    db.collection("donations").add({
+        name: req.body.inputName,
+        location: req.body.inputLocation,
+        value: req.body.inputValue,
+        shortDescription: req.body.inputShort,
+        fullDescription: req.body.inputLong,
+        comment: req.body.inputComment,
+        category: req.body.typedropdown,
+        timestamp: dateTime
+    })
+    .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        db.collection("locations").where("name", "==", req.params.id)
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    location = doc.data();
+                    res.render("location", {location: location, donations: donationsarr});
+                });
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
+        donationsarr = [];
+        location = null;
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+    })
 app.get("/locationspage/:id", function(req, res){
     db.collection("donations").where("location", "==", req.params.id)
             .get()

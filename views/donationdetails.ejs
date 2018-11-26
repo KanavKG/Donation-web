@@ -1,0 +1,16 @@
+<% include partials/header %>
+
+<header class="jumbotron">
+    <div class = "container">
+    <h3><%= donation.name %> </h3>
+    <h5><%= donation.category %> </h5>
+    <h6> <%= donation.shortDescription %> </h6>
+    <p><a class = "btn btn-primary btn-large" href="/locationspage/<%=donation.location%>">Go back</a></p>
+    <div class = "container">
+</header>
+
+
+<div class = "container">
+    <h3>Quantity: <%= donation.value %> </h3>
+    <h3>Full Description: <%= donation.fullDescription %> </h3>
+    <h3>Timestamp: <%= donation.timestamp %> </h3>

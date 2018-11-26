@@ -14,7 +14,7 @@
 
     <% donations.forEach(function(donation){ %>
     <div class="container">
-    <a href="#" class="list-group-item list-group-item-action">
+    <a href="/locationdetails/<%=location.name%>/<%=donation.name%>" class="list-group-item list-group-item-action">
     <h3><%= donation.name %> </h3>
     <h6> <%= donation.category %> </h6>
     <h6> Quantity: <%= donation.value %> </h6>
