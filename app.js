@@ -58,9 +58,6 @@ app.get("/", function(req, res) {
 
 });
 
-app.post("/", function(req, res){
-    res.redirect("locationspage");
-});
 
 app.get("/locationspage", function(req, res){
     db.collection("locations").get().then((querySnapshot) => {
@@ -181,7 +178,7 @@ app.post("/locationspage/:id/newdonation", function(req, res){
     var dateTime = date+' '+time;
     db.collection("donations").add({
         name: req.body.inputName,
-        location: req.body.inputLocation,
+        location: req.params.id,
         value: req.body.inputValue,
         shortDescription: req.body.inputShort,
         fullDescription: req.body.inputLong,
@@ -191,7 +188,7 @@ app.post("/locationspage/:id/newdonation", function(req, res){
     })
     .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
-        res.redirect("location")
+        res.redirect("/locationspage/" + req.params.id);
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
