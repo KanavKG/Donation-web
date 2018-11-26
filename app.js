@@ -134,7 +134,8 @@ app.post("/registration", function(req, res){
             console.log(error.message);
         });
     } else {
-        window.alert("Password and Confirm passwords do not match");
+        console.log("Password and Confirm passwords do not match");
+        res.redirect("registration");
     }
 });
 
