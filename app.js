@@ -111,19 +111,31 @@ app.post("/registration", function(req, res){
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function() {
             var user = firebase.auth().currentUser;
-            db.collection("users").add({
+            db.collection("users").doc(email).set({
                 first: fname,
                 last: lname,
                 role: role,
                 UID: user.uid
             })
-            .then(function(docRef) {
-                console.log("Document written with ID: ", docRef.id);
+            .then(function() {
+                console.log("Document successfully written!");
             })
             .catch(function(error) {
-                console.error("Error adding document: ", error);
+                console.error("Error writing document: ", error);
             });
-
+            // var user = firebase.auth().currentUser;
+            // db.collection("users").add({
+            //     first: fname,
+            //     last: lname,
+            //     role: role,
+            //     UID: user.uid
+            // })
+            // .then(function(docRef) {
+            //     console.log("Document written with ID: ", docRef.id);
+            // })
+            // .catch(function(error) {
+            //     console.error("Error adding document: ", error);
+            // });
             res.redirect("locationspage");
             //Add user to database
             //Redirect to locationspage
@@ -170,6 +182,8 @@ app.get("/locationdetails/:id", function(req, res){
         });
         location = null;
 });
+
+
 
 app.get("/locationspage/:id/newdonation", function(req, res){
     res.render("newdonation");
@@ -225,6 +239,41 @@ app.get("/locationspage/:id", function(req, res){
     donationsarr = [];
     location = null;
 });
+
+app.post("/locationspage/:id", function(req, res){
+    db.collection("donations").where("location", "==", req.params.id)
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                if (req.body.searchbar === "") {
+                    donationsarr.push(doc.data());
+                } else {
+                if (doc.data().name.toUpperCase() === req.body.searchbar.toUpperCase()) {
+                    // doc.data() is never undefined for query doc snapshots
+                    donationsarr.push(doc.data());
+                }
+            }
+
+                });
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
+    db.collection("locations").where("name", "==", req.params.id)
+        .get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                location = doc.data();
+                res.render("location", {location: location, donations: donationsarr});
+            });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+    donationsarr = [];
+    location = null;
+})
 
 app.get("/locationspage/")
 app.post("/locationspage", function(req, res){

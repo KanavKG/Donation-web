@@ -11,8 +11,18 @@
     <div class = "container">
 </header>
 
-<div class="list-group">
+<div class="container">
+<form class="form-signin" method="POST">
 
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" name="searchbar" placeholder="Search for an item" aria-label="Search for an item" aria-describedby="button-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit" name="searchButton">Search</button>
+      </div>
+    </div>
+    </form>
+</div>
+    <div class="list-group">
     <% donations.forEach(function(donation){ %>
     <div class="container">
     <a href="/locationdetails/<%=location.name%>/<%=donation.name%>" class="list-group-item list-group-item-action">
