@@ -15,24 +15,63 @@
     <div class = "container">
     <h3>Locations map</h3>
     <p><a class = "btn btn-primary btn-large" href="/locationspage/">Go back</a></p>
-    <div class = "container">
-
-
-
+        <%var markers = []%>
+        <%var len = 0%>
+        <% locations.forEach(function(location){ %>
+        <%markers.push(location)%>
+        <% }); %>
+        <%len = markers.length.toString();%>
 
   <!--The div element for the map -->
   <div id="map"></div>
 
   <script>
     // Initialize and add the map
+
     function initMap() {
       // The location of Uluru
-      var uluru = {lat: -25.344, lng: 131.036};
+      var uluru = {lat: <%=markers[0].latitude%>, lng: <%=markers[0].longitude%>};
+      var marker = new google.maps.Marker({position: uluru, map: map});
+      var kluru = {lat: <%=markers[1].latitude%>, lng: <%=markers[1].longitude%>};
+      var marker = new google.maps.Marker({position: kluru, map: map});
+      var qluru = {lat: <%=markers[2].latitude%>, lng: <%=markers[2].longitude%>};
+      var marker = new google.maps.Marker({position: qluru, map: map});
+      var wluru = {lat: <%=markers[3].latitude%>, lng: <%=markers[3].longitude%>};
+      var marker = new google.maps.Marker({position: wluru, map: map});
+      var eluru = {lat: <%=markers[4].latitude%>, lng: <%=markers[4].longitude%>};
+      var marker = new google.maps.Marker({position: eluru, map: map});
+      var rluru = {lat: <%=markers[5].latitude%>, lng: <%=markers[5].longitude%>};
+      var marker = new google.maps.Marker({position: rluru, map: map});
+
       // The map, centered at Uluru
       var map = new google.maps.Map(
-          document.getElementById('map'), {zoom: 4, center: uluru});
+          document.getElementById('map'), {zoom: 9.7, center: qluru});
       // The marker, positioned at Uluru
-      var marker = new google.maps.Marker({position: uluru, map: map});
+      var marker = new google.maps.Marker({position: uluru, map: map, title: 'Click to zoom', animation: google.maps.Animation.DROP,});
+      var marker = new google.maps.Marker({position: kluru, map: map, animation: google.maps.Animation.DROP});
+      var marker = new google.maps.Marker({position: qluru, map: map, animation: google.maps.Animation.DROP})
+      var marker = new google.maps.Marker({position: wluru, map: map, animation: google.maps.Animation.DROP})
+      var marker = new google.maps.Marker({position: eluru, map: map, animation: google.maps.Animation.DROP})
+      var marker = new google.maps.Marker({position: rluru, map: map, animation: google.maps.Animation.DROP})
+
+      var infowindow = new google.maps.InfoWindow({
+          content: "kdmdkdm"
+        });
+      map.addListener('center_changed', function() {
+                // 3 seconds after the center of the map has changed, pan back to the
+                // marker.
+                window.setTimeout(function() {
+                  map.panTo(marker.getPosition());
+                }, 3000);
+              });
+
+              marker.addListener('click', function() {
+                map.setZoom(12);
+                map.setCenter(marker.getPosition());
+              });
+              marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
     }
   </script>
 
@@ -42,7 +81,7 @@
   * The callback parameter executes the initMap() function
   -->
   <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+  <!-- src="https://maps.googleapis.com/maps/api/js?key=<%process.env.MAPS_KEY%>&callback=initMap"> -->
   </script>
 </body>
 

@@ -75,7 +75,14 @@ app.get("/locationspage/new", function(req, res){
 })
 
 app.get("/locationspage/map", function(req, res){
-    res.render("map");
+    db.collection("locations").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+        var temp = doc.data();
+        locations.push(temp);
+        });
+    res.render("map", {locations: locations});
+    locations = [];
+    });
 })
 
 app.get("/signin", function(req, res){
